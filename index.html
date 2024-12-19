@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora UIT 2025 - Perú</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
+                Calculadora de Impuesto a la Renta 2025
+            </h1>
+            <p class="text-gray-600">Perú - UIT: S/ 5,350</p>
+        </div>
+
+        <!-- Main Calculator Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Input Section -->
+            <div class="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-indigo-600">
+                <div class="max-w-xl mx-auto">
+                    <label class="block text-lg font-medium text-white mb-2">
+                        Ingrese su sueldo mensual
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">S/</span>
+                        <input 
+                            type="number" 
+                            id="sueldoMensual" 
+                            class="w-full pl-10 pr-4 py-3 rounded-lg text-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
+                            placeholder="0.00">
+                    </div>
+                    <button 
+                        onclick="calcularImpuesto()" 
+                        class="mt-4 w-full bg-white text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-md">
+                        Calcular Impuesto
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultado" class="p-6 md:p-8 hidden">
+                <div class="grid gap-6 md:grid-cols-2">
+                    <!-- Left Column - Cálculos -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Detalles del cálculo</h3>
+                        <div class="space-y-3">
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <p class="text-sm text-gray-600">Ingreso Anual</p>
+                                <p id="ingresoAnual" class="text-lg font-semibold text-gray-800"></p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <p class="text-sm text-gray-600">Deducción 20%</p>
+                                <p id="deduccion20" class="text-lg font-semibold text-gray-800"></p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <p class="text-sm text-gray-600">Renta Neta</p>
+                                <p id="rentaNeta" class="text-lg font-semibold text-gray-800"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Resultado Final -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Resultado final</h3>
+                        <div class="space-y-3">
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <p class="text-sm text-gray-600">Deducción 7 UIT</p>
+                                <p id="uit7" class="text-lg font-semibold text-gray-800"></p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <p class="text-sm text-gray-600">Base Imponible</p>
+                                <p id="baseImponible" class="text-lg font-semibold text-gray-800"></p>
+                            </div>
+                            <div class="p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+                                <p class="text-sm text-blue-600 font-medium">Impuesto a Pagar</p>
+                                <p id="impuestoTotal" class="text-2xl font-bold text-blue-600"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-yellow-600 text-xl"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-yellow-800">Información importante</h4>
+                            <p class="mt-1 text-sm text-yellow-700">
+                                Este cálculo es una aproximación basada en el nuevo valor UIT 2025 (S/ 5,350) y considera las 14 remuneraciones anuales.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const UIT_2025 = 5350;
+
+        function calcularImpuesto() {
+            const sueldoMensual = parseFloat(document.getElementById('sueldoMensual').value);
+            
+            if (!sueldoMensual || sueldoMensual <= 0) {
+                alert('Por favor, ingrese un sueldo válido');
+                return;
+            }
+
+            // Cálculos
+            const ingresoAnual = sueldoMensual * 14;
+            const deduccion20 = ingresoAnual * 0.20;
+            const rentaNeta = ingresoAnual - deduccion20;
+            const deduccion7UIT = UIT_2025 * 7;
+            const baseImponible = rentaNeta - deduccion7UIT;
+            
+            let impuesto = 0;
+            if (baseImponible > 0) {
+                impuesto = baseImponible * 0.08;
+            }
+
+            // Formato de moneda
+            const formatoMoneda = (valor) => {
+                return `S/ ${valor.toFixed(2)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            };
+
+            // Mostrar resultados
+            document.getElementById('resultado').classList.remove('hidden');
+            document.getElementById('ingresoAnual').textContent = formatoMoneda(ingresoAnual);
+            document.getElementById('deduccion20').textContent = formatoMoneda(deduccion20);
+            document.getElementById('rentaNeta').textContent = formatoMoneda(rentaNeta);
+            document.getElementById('uit7').textContent = formatoMoneda(deduccion7UIT);
+            document.getElementById('baseImponible').textContent = formatoMoneda(baseImponible > 0 ? baseImponible : 0);
+            document.getElementById('impuestoTotal').textContent = formatoMoneda(impuesto > 0 ? impuesto : 0);
+        }
+    </script>
+</body>
+</html>
